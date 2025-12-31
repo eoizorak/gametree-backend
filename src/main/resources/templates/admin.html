@@ -5,46 +5,91 @@
     <title>Painel Admin | GameTree</title>
     <style>
         body { background-color: #0f0f13; color: white; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
-        form { background-color: #1e1e24; padding: 30px; border-radius: 10px; width: 100%; max-width: 500px; border: 1px solid #2f2f38; }
-        h2 { color: #00ff88; text-align: center; margin-top: 0; }
+        .admin-container { width: 100%; max-width: 600px; }
+        
+        
+        .box { background-color: #1e1e24; padding: 30px; border-radius: 10px; border: 1px solid #2f2f38; margin-bottom: 20px; }
+        
+        h2 { color: #00ff88; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
         label { display: block; margin-top: 15px; color: #a0a0a0; font-size: 14px; }
         input { width: 95%; padding: 10px; margin-top: 5px; background-color: #151515; border: 1px solid #444; color: white; border-radius: 5px; }
-        button { width: 100%; margin-top: 25px; padding: 15px; background-color: #00ff88; color: black; border: none; font-weight: bold; cursor: pointer; font-size: 16px; border-radius: 5px; }
-        button:hover { background-color: #00cc6a; }
+        
+        .btn-save { width: 100%; margin-top: 25px; padding: 15px; background-color: #00ff88; color: black; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; }
+        .btn-save:hover { background-color: #00cc6a; }
+
+        
+        .link-item { display: flex; justify-content: space-between; align-items: center; background: #151515; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #333; }
+        .link-info { display: flex; flex-direction: column; }
+        .link-title { font-weight: bold; color: white; }
+        .link-url { font-size: 12px; color: #666; }
+        
+        .btn-delete { background-color: #ff4444; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        .btn-delete:hover { background-color: #cc0000; }
+
+        .btn-add { background-color: #7289da; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 10px; }
+        .btn-add:hover { background-color: #5b6eae; }
     </style>
 </head>
 <body>
 
-    <form action="/admin/save" method="post" th:object="${profile}">
-        <h2>🔧 Editar Perfil</h2>
+    <div class="admin-container">
+        
+        <div class="box">
+            <form action="/admin/save" method="post" th:object="${profile}">
+                <h2>🔧 Dados do Perfil</h2>
+                <input type="hidden" th:field="*{id}">
 
-        <input type="hidden" th:field="*{id}">
+                <label>Nome</label>
+                <input type="text" th:field="*{nome}">
 
-        <label>Nome do Perfil</label>
-        <input type="text" th:field="*{nome}" required>
+                <label>Bio</label>
+                <input type="text" th:field="*{bio}">
 
-        <label>Bio / Descrição</label>
-        <input type="text" th:field="*{bio}">
+                <label>Avatar URL</label>
+                <input type="text" th:field="*{avatarUrl}">
 
-        <label>Link do Avatar (Imagem)</label>
-        <input type="text" th:field="*{avatarUrl}">
+                <label>Status</label>
+                <input type="text" th:field="*{statusServidor}">
 
-        <label>Status do Servidor (ex: 🟢 Online)</label>
-        <input type="text" th:field="*{statusServidor}">
+                <hr style="border-color: #333; margin: 20px 0;">
+                <label style="color: #7289da">Links Fixos (Destaque)</label>
+                <input type="text" th:field="*{discordUrl}" placeholder="Discord">
+                <input type="text" th:field="*{youtubeUrl}" placeholder="YouTube">
+                <input type="text" th:field="*{instagramUrl}" placeholder="Instagram">
 
-        <hr style="border-color: #333; margin-top: 20px;">
+                <button type="submit" class="btn-save">Salvar Alterações</button>
+            </form>
+        </div>
 
-        <label>Link Discord</label>
-        <input type="text" th:field="*{discordUrl}">
+        <div class="box">
+            <h2>🔗 Links Extras</h2>
+            
+            <div th:each="link : ${profile.links}" class="link-item">
+                <div class="link-info">
+                    <span class="link-title" th:text="${link.titulo}">Título</span>
+                    <span class="link-url" th:text="${link.url}">URL</span>
+                </div>
+                
+                <form th:action="@{/admin/links/delete/{id}(id=${link.id})}" method="post">
+                    <button type="submit" class="btn-delete">Excluir</button>
+                </form>
+            </div>
 
-        <label>Link YouTube</label>
-        <input type="text" th:field="*{youtubeUrl}">
+            <hr style="border-color: #333; margin: 20px 0;">
 
-        <label>Link Instagram</label>
-        <input type="text" th:field="*{instagramUrl}">
+            <h3>Adicionar Novo Link</h3>
+            <form action="/admin/links/add" method="post">
+                <input type="text" name="titulo" placeholder="Título (ex: Twitch)" required>
+                <input type="text" name="url" placeholder="URL (ex: https://twitch.tv...)" required>
+                <button type="submit" class="btn-add">+ Adicionar Link</button>
+            </form>
+        </div>
 
-        <button type="submit">Salvar Alterações</button>
-    </form>
+        <div style="text-align: center;">
+            <a href="/" style="color: #666; text-decoration: none;">← Voltar para o Site</a>
+        </div>
+
+    </div>
 
 </body>
 </html>
