@@ -17,11 +17,15 @@ public class Profile {
     private String statusServidor;
 
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+  
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Link> links = new ArrayList<>();
 
     public Profile() {}
-
 
     public Profile(String nome, String bio, String avatarUrl, String statusServidor) {
         this.nome = nome;
@@ -37,6 +41,9 @@ public class Profile {
     public String getAvatarUrl() { return avatarUrl; }
     public String getStatusServidor() { return statusServidor; }
     public List<Link> getLinks() { return links; }
+    
+
+    public User getUser() { return user; }
 
 
     public void setId(Long id) { this.id = id; }
@@ -45,4 +52,7 @@ public class Profile {
     public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
     public void setStatusServidor(String statusServidor) { this.statusServidor = statusServidor; }
     public void setLinks(List<Link> links) { this.links = links; }
+
+
+    public void setUser(User user) { this.user = user; }
 }
