@@ -7,7 +7,6 @@
         body { background-color: #0f0f13; color: white; font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
         .admin-container { width: 100%; max-width: 600px; }
         
-        
         .box { background-color: #1e1e24; padding: 30px; border-radius: 10px; border: 1px solid #2f2f38; margin-bottom: 20px; }
         
         h2 { color: #00ff88; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
@@ -17,7 +16,6 @@
         .btn-save { width: 100%; margin-top: 25px; padding: 15px; background-color: #00ff88; color: black; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; }
         .btn-save:hover { background-color: #00cc6a; }
 
-        
         .link-item { display: flex; justify-content: space-between; align-items: center; background: #151515; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #333; }
         .link-info { display: flex; flex-direction: column; }
         .link-title { font-weight: bold; color: white; }
@@ -70,7 +68,7 @@
                     <span class="link-url" th:text="${link.url}">URL</span>
                 </div>
                 
-                <form th:action="@{/admin/links/delete/{id}(id=${link.id})}" method="post">
+                <form th:action="@{/admin/links/delete/{id}(id=${link.id})}" method="post" onsubmit="return confirm('Tem certeza que deseja apagar este link?');">
                     <button type="submit" class="btn-delete">Excluir</button>
                 </form>
             </div>
