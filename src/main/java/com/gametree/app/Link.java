@@ -9,10 +9,9 @@ public class Link {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String titulo; 
-    private String url;    
+    private String titulo;
+    private String url;
 
-   
     @ManyToOne
     @JoinColumn(name = "profile_id") 
     private Profile profile;
@@ -25,7 +24,11 @@ public class Link {
         this.profile = profile;
     }
 
-    
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+
     public String getTitulo() { return titulo; }
     public void setTitulo(String titulo) { this.titulo = titulo; }
     
