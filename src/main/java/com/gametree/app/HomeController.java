@@ -30,7 +30,6 @@ public class HomeController {
 
     @GetMapping("/admin")
     public String admin(Model model) {
-
         Profile perfil = repository.findAll().stream().findFirst().orElse(new Profile());
         model.addAttribute("profile", perfil);
         return "admin";
@@ -40,8 +39,13 @@ public class HomeController {
     public String salvar(@ModelAttribute Profile profile) {
 
         Profile existente = repository.findAll().stream().findFirst().orElse(null);
+        
         if (existente != null) {
+
             profile.setId(existente.getId()); 
+            
+
+            profile.setLinks(existente.getLinks());
         }
         
         repository.save(profile);
