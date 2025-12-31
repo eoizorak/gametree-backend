@@ -42,4 +42,18 @@ public class Profile {
     public String getDiscordUrl() { return discordUrl; }
     public String getYoutubeUrl() { return youtubeUrl; }
     public String getInstagramUrl() { return instagramUrl; }
+
+// --- Setters (Necessários para editar os dados) ---
+    public void setId(Long id) { this.id = id; }
+    // Adicione este método que estava faltando:
+    public Long getId() {
+        return id;
+    }
+    public void setNome(String nome) { this.nome = nome; }
+    public void setBio(String bio) { this.bio = bio; }
+    public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
+    public void setStatusServidor(String statusServidor) { this.statusServidor = statusServidor; }
+    public void setDiscordUrl(String discordUrl) { this.discordUrl = discordUrl; }
+    public void setYoutubeUrl(String youtubeUrl) { this.youtubeUrl = youtubeUrl; }
+    public void setInstagramUrl(String instagramUrl) { this.instagramUrl = instagramUrl; }
 }
