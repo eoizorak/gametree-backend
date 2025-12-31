@@ -7,22 +7,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
+    // Injeção de Dependência: O Spring nos dá o repository pronto
+    private final ProfileRepository repository;
+
+    public HomeController(ProfileRepository repository) {
+        this.repository = repository;
+    }
+
     @GetMapping("/")
     public String home(Model model) {
-        // Simulando dados que viriam do Banco de Dados
-        Profile perfil = new Profile(
-            "Matheus Dev Java & Backend",
-            "Criador do GameTree | Backend Dev",
-            "https://ui-avatars.com/api/?name=Matheus+Java&background=00ff88&color=000",
-            "🔴 Manutenção (Voltamos às 14h)", 
-            "https://discord.gg/seu-link",
-            "https://youtube.com/seu-canal",
-            "https://instagram.com/seu-insta"
-        );
+        // Busca o PRIMEIRO perfil que encontrar no banco (ID 1)
+        // O .orElse(null) é para não quebrar se o banco estiver vazio
+        Profile perfilDoBanco = repository.findAll().stream().findFirst().orElse(null);
 
-        // Enviando o perfil para o HTMLL
-        model.addAttribute("profile", perfil);
-        
-        return "index";
+        if (perfilDoBanco != null) {
+            model.addAttribute("profile", perfilDoBanco);
+            return "index";
+        } else {
+            return "erro"; // Só por segurança
+        }
     }
 }
