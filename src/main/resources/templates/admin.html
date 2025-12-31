@@ -35,18 +35,24 @@
     <div class="admin-container">
         
         <div class="box">
-            <form action="/admin/save" method="post" th:object="${profile}">
+            <form action="/admin/save" method="post" enctype="multipart/form-data" th:object="${profile}">
                 <h2>🔧 Dados do Perfil</h2>
                 <input type="hidden" th:field="*{id}">
+
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img th:src="*{avatarUrl}" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #00ff88; object-fit: cover;" alt="Avatar Atual">
+                </div>
+
+                <label>Trocar Foto de Perfil</label>
+                <input type="file" name="file" accept="image/*" style="border: 1px dashed #444; background-color: #111;">
+                
+                <input type="hidden" th:field="*{avatarUrl}">
 
                 <label>Nome</label>
                 <input type="text" th:field="*{nome}">
 
                 <label>Bio</label>
                 <input type="text" th:field="*{bio}">
-
-                <label>Avatar URL</label>
-                <input type="text" th:field="*{avatarUrl}">
 
                 <label>Status</label>
                 <input type="text" th:field="*{statusServidor}">

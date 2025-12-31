@@ -3,9 +3,12 @@ package com.gametree.app;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile; 
 
 import java.security.Principal;
-import java.util.Objects; 
+import java.util.Objects;
+import java.util.Base64; 
+import java.io.IOException; 
 
 @Controller
 public class HomeController {
@@ -48,15 +51,33 @@ public class HomeController {
         return "admin";
     }
 
+    
     @PostMapping("/admin/save")
-    public String salvar(@ModelAttribute Profile profileForm, Principal principal) {
+    public String salvar(@ModelAttribute Profile profileForm, 
+                         @RequestParam("file") MultipartFile file, 
+                         Principal principal) {
+        
         User usuarioLogado = userRepository.findByUsername(principal.getName()).orElseThrow();
         Profile perfilDoBanco = usuarioLogado.getProfile();
 
+        
         perfilDoBanco.setNome(profileForm.getNome());
         perfilDoBanco.setBio(profileForm.getBio());
-        perfilDoBanco.setAvatarUrl(profileForm.getAvatarUrl());
         perfilDoBanco.setStatusServidor(profileForm.getStatusServidor());
+
+        
+        if (!file.isEmpty()) {
+            try {
+                
+                String base64Image = "data:" + file.getContentType() + ";base64," +
+                        Base64.getEncoder().encodeToString(file.getBytes());
+                
+                perfilDoBanco.setAvatarUrl(base64Image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         profileRepository.save(perfilDoBanco);
         return "redirect:/admin";
@@ -77,12 +98,11 @@ public class HomeController {
     public String deletarLink(@PathVariable Long id, Principal principal) {
         Link link = linkRepository.findById(id).orElse(null);
         
-        
         if (link != null && link.getProfile().getUser().getUsername().equals(principal.getName())) {
             
             Profile dono = link.getProfile();
             
-            
+
             dono.getLinks().removeIf(l -> Objects.equals(l.getId(), id));
             
             profileRepository.save(dono);

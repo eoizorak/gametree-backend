@@ -13,14 +13,15 @@ public class Profile {
 
     private String nome;
     private String bio;
-    private String avatarUrl;
-    private String statusServidor;
 
+    @Column(columnDefinition = "TEXT")
+    private String avatarUrl;
+
+    private String statusServidor;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
   
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Link> links = new ArrayList<>();
@@ -41,8 +42,6 @@ public class Profile {
     public String getAvatarUrl() { return avatarUrl; }
     public String getStatusServidor() { return statusServidor; }
     public List<Link> getLinks() { return links; }
-    
-
     public User getUser() { return user; }
 
 
@@ -52,7 +51,5 @@ public class Profile {
     public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
     public void setStatusServidor(String statusServidor) { this.statusServidor = statusServidor; }
     public void setLinks(List<Link> links) { this.links = links; }
-
-
     public void setUser(User user) { this.user = user; }
 }
