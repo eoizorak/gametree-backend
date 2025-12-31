@@ -53,7 +53,7 @@ Este projeto foi construído com foco principal no **Backend**, visando praticar
 
 | Perfil Público | Registro |
 |:---:|:---:|
-| <img src="./assets/public-profile.png" width="400"> | <img src="./assets/register-screen.png" width="400"> |
+| <img src="./assets/public-profile.png" width="400"> | <img src="./assets/register.png" width="400"> |
 
 > *Nota: O layout foi desenvolvido com foco em funcionalidade e usabilidade.*
 
