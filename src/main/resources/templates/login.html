@@ -5,13 +5,70 @@
     <title>Login | GameTree</title>
     <style>
         body { background-color: #0f0f13; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .login-box { background-color: #1e1e24; padding: 40px; border-radius: 10px; border: 1px solid #2f2f38; width: 100%; max-width: 350px; text-align: center; }
+        
+        .login-box { 
+            background-color: #1e1e24; 
+            padding: 40px; 
+            border-radius: 10px; 
+            border: 1px solid #2f2f38; 
+            width: 100%; 
+            max-width: 350px; 
+            text-align: center; 
+        }
+
         h2 { color: #00ff88; margin-top: 0; }
-        input { width: 90%; padding: 12px; margin-top: 15px; background-color: #151515; border: 1px solid #444; color: white; border-radius: 5px; outline: none; }
+        
+        input { 
+            width: 90%; 
+            padding: 12px; 
+            margin-top: 15px; 
+            background-color: #151515; 
+            border: 1px solid #444; 
+            color: white; 
+            border-radius: 5px; 
+            outline: none; 
+        }
         input:focus { border-color: #00ff88; }
-        button { width: 100%; margin-top: 25px; padding: 15px; background-color: #00ff88; color: black; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 16px; transition: 0.3s; }
-        button:hover { background-color: #00cc6a; transform: scale(1.02); }
+        
+        
+        .btn-login { 
+            width: 100%; 
+            margin-top: 25px; 
+            padding: 15px; 
+            background-color: #00ff88; 
+            color: black; 
+            border: none; 
+            font-weight: bold; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            font-size: 16px; 
+            transition: 0.3s; 
+        }
+        .btn-login:hover { background-color: #00cc6a; transform: scale(1.02); }
+
+        
+        .btn-register {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            background-color: transparent;
+            border: 2px solid #7289da; 
+            color: #7289da;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .btn-register:hover {
+            background-color: #7289da;
+            color: white;
+        }
+
         .error { color: #ff4444; background-color: #3d1a1a; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px; }
+        .success { color: #00ff88; background-color: #1a3d2b; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px; }
+        
+        hr { border: 0; border-top: 1px solid #333; margin: 25px 0; }
     </style>
 </head>
 <body>
@@ -23,11 +80,22 @@
             Usuário ou senha incorretos.
         </div>
 
+        <div th:if="${param.created}" class="success">
+            Conta criada com sucesso! Faça login.
+        </div>
+
         <form th:action="@{/login}" method="post">
             <input type="text" name="username" placeholder="Usuário" required autofocus>
             <input type="password" name="password" placeholder="Senha" required>
-            <button type="submit">Entrar no Sistema</button>
+            <button type="submit" class="btn-login">Entrar no Sistema</button>
         </form>
+
+        <hr>
+
+        <p style="color: #aaa; font-size: 14px; margin-bottom: 5px;">Ainda não tem uma conta?</p>
+        <a href="/register" style="text-decoration: none;">
+            <button type="button" class="btn-register">Criar conta grátis</button>
+        </a>
     </div>
 
 </body>
