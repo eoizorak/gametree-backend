@@ -62,18 +62,18 @@
 <body>
 
     <div class="container">
-        <img src="https://ui-avatars.com/api/?name=Matheus+Dev&background=7289da&color=fff" class="avatar" alt="Avatar">
+        <img th:src="${profile.avatarUrl}" class="avatar" alt="Avatar">
         
-        <h1>Matheus Dev</h1>
-        <p>Desenvolvedor Java | Gamer</p>
+        <h1 th:text="${profile.nome}">Nome Fixo</h1>
+        <p th:text="${profile.bio}">Bio Fixa</p>
 
-        <div class="status-box">
-            🟢 Servidor Online: 12/50 Jogadores
-        </div>
+    <div class="status-box">
+        <span th:text="${profile.statusServidor}">Carregando status...</span>
+    </div>
 
-        <a href="#" class="link-btn">🎮 Meu Discord</a>
-        <a href="#" class="link-btn">📺 Canal no YouTube</a>
-        <a href="#" class="link-btn">📷 Instagram</a>
+        <a th:href="${profile.discordUrl}" class="link-btn">🎮 Meu Discord</a>
+        <a th:href="${profile.youtubeUrl}" class="link-btn">📺 Canal no YouTube</a>
+        <a th:href="${profile.instagramUrl}" class="link-btn">📷 Instagram</a>
         
     </div>
 
