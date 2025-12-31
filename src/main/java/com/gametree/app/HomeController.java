@@ -59,9 +59,23 @@ public class HomeController {
         return "redirect:/admin";
     }
 
-    @PostMapping("/admin/links/delete/{id}")
+@PostMapping("/admin/links/delete/{id}")
     public String deletarLink(@PathVariable Long id) {
-        linkRepository.deleteById(id);
+        
+        Link link = linkRepository.findById(id).orElse(null);
+        
+        if (link != null) {
+            
+            Profile dono = link.getProfile();
+            
+            if (dono != null) {
+                dono.getLinks().removeIf(l -> l.getId().equals(id));
+                profileRepository.save(dono); 
+            }
+
+            linkRepository.delete(link);
+        }
+        
         return "redirect:/admin";
     }
 }
