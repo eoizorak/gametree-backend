@@ -24,6 +24,14 @@
 </head>
 <body>
 
+    <div style="position: absolute; top: 20px; right: 20px;">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" style="background-color: #ff4444; color: white; border: 1px solid #cc0000; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; font-family: sans-serif; transition: 0.3s;">
+                🚪 Sair
+            </button>
+        </form>
+    </div>
+
     <div class="admin-container">
         
         <div class="box">
