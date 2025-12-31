@@ -24,7 +24,7 @@ public class GametreeApplication {
 
                 Profile meuPerfil = new Profile(
                     "Matheus - Full Links",
-                    "Todos os links agora são dinâmicos e opcionais!",
+                    "Todos os links agora são opcionais e deletáveis!",
                     "https://ui-avatars.com/api/?name=Matheus+Link&background=00ff88&color=000",
                     "🟢 Sistema Unificado Online"
                 );
@@ -44,7 +44,7 @@ public class GametreeApplication {
                 meuPerfil.setLinks(listaLinks);
 
                 repository.save(meuPerfil);
-                System.out.println("✅ Perfil unificado criado!");
+                System.out.println("✅ Perfil unificado criado com sucesso!");
             }
         };
     }

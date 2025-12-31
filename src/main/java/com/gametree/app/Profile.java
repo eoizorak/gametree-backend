@@ -16,10 +16,12 @@ public class Profile {
     private String avatarUrl;
     private String statusServidor;
 
+
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Link> links = new ArrayList<>();
 
     public Profile() {}
+
 
     public Profile(String nome, String bio, String avatarUrl, String statusServidor) {
         this.nome = nome;
@@ -28,12 +30,14 @@ public class Profile {
         this.statusServidor = statusServidor;
     }
 
+
     public Long getId() { return id; }
     public String getNome() { return nome; }
     public String getBio() { return bio; }
     public String getAvatarUrl() { return avatarUrl; }
     public String getStatusServidor() { return statusServidor; }
     public List<Link> getLinks() { return links; }
+
 
     public void setId(Long id) { this.id = id; }
     public void setNome(String nome) { this.nome = nome; }
