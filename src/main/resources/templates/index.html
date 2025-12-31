@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameTree | Links</title>
     <style>
-        /* Estilo Gamer Dark */
+        
         body {
-            background-color: #0f0f13; /* Fundo quase preto */
+            background-color: #0f0f13; 
             color: white;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
@@ -26,7 +26,7 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            border: 3px solid #7289da; /* Roxo Discord */
+            border: 3px solid #7289da; 
             margin-bottom: 15px;
         }
         h1 { font-size: 22px; margin-bottom: 5px; }
@@ -45,7 +45,7 @@
             border: 1px solid #2f2f38;
         }
         .link-btn:hover {
-            background-color: #7289da; /* Hover roxo */
+            background-color: #7289da; 
             transform: scale(1.02);
         }
         .status-box {
@@ -54,7 +54,7 @@
             border-radius: 5px;
             margin-bottom: 20px;
             font-size: 14px;
-            color: #00ff88; /* Verde Hacker */
+            color: #00ff88; 
             border: 1px dashed #00ff88;
         }
     </style>
@@ -64,17 +64,26 @@
     <div class="container">
         <img th:src="${profile.avatarUrl}" class="avatar" alt="Avatar">
         
-        <h1 th:text="${profile.nome}">Nome Fixo</h1>
-        <p th:text="${profile.bio}">Bio Fixa</p>
+        <h1 th:text="${profile.nome}">Nome Carregando...</h1>
+        <p th:text="${profile.bio}">Bio Carregando...</p>
 
-    <div class="status-box">
-        <span th:text="${profile.statusServidor}">Carregando status...</span>
-    </div>
+        <div class="status-box">
+            <span th:text="${profile.statusServidor}">Carregando status...</span>
+        </div>
 
         <a th:href="${profile.discordUrl}" class="link-btn">🎮 Meu Discord</a>
         <a th:href="${profile.youtubeUrl}" class="link-btn">📺 Canal no YouTube</a>
         <a th:href="${profile.instagramUrl}" class="link-btn">📷 Instagram</a>
         
+        <hr style="border-color: #333; margin: 25px 0;">
+
+        <div th:each="link : ${profile.links}">
+            <a th:href="${link.url}" 
+               th:text="${link.titulo}" 
+               class="link-btn" 
+               target="_blank">Link Extra</a>
+        </div>
+
     </div>
 
 </body>
