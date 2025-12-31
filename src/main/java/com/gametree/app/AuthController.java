@@ -10,39 +10,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AuthController {
 
     private final UserRepository userRepository;
-    private final ProfileRepository profileRepository;
+
     private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserRepository userRepository, ProfileRepository profileRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.profileRepository = profileRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     @GetMapping("/login")
     public String loginPage() {
         return "login";
     }
 
-
     @GetMapping("/register")
     public String registerPage() {
         return "register";
     }
 
-
     @PostMapping("/register/save")
     public String registrarUsuario(@RequestParam String username, @RequestParam String password) {
-
         if (userRepository.findByUsername(username).isPresent()) {
             return "redirect:/register?error=exists";
         }
 
-
         User novoUser = new User(username, passwordEncoder.encode(password));
         
-
         Profile novoPerfil = new Profile(
             username, 
             "Bem-vindo ao GameTree!",
@@ -50,12 +43,10 @@ public class AuthController {
             "🟢 Online"
         );
         
-
         novoPerfil.setUser(novoUser);
         novoUser.setProfile(novoPerfil);
 
-
-        userRepository.save(novoUser);
+        userRepository.save(novoUser); 
 
         return "redirect:/login?created=true";
     }

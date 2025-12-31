@@ -5,13 +5,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Objects; 
 
 @Controller
 public class HomeController {
 
     private final ProfileRepository profileRepository;
     private final LinkRepository linkRepository;
-    private final UserRepository userRepository; 
+    private final UserRepository userRepository;
 
     public HomeController(ProfileRepository profileRepository, LinkRepository linkRepository, UserRepository userRepository) {
         this.profileRepository = profileRepository;
@@ -19,35 +20,30 @@ public class HomeController {
         this.userRepository = userRepository;
     }
 
-
+    
     @GetMapping("/u/{username}")
     public String verPerfilPublico(@PathVariable String username, Model model) {
-
         User usuario = userRepository.findByUsername(username).orElse(null);
         
-
         if (usuario != null && usuario.getProfile() != null) {
             model.addAttribute("profile", usuario.getProfile());
-            return "index"; 
+            return "index";
         }
         
-        return "redirect:/login"; 
+        return "redirect:/login";
     }
 
-
+    
     @GetMapping("/")
     public String home() {
         return "redirect:/login";
     }
 
-
+    
 
     @GetMapping("/admin")
     public String admin(Model model, Principal principal) {
-
         User usuarioLogado = userRepository.findByUsername(principal.getName()).orElseThrow();
-        
-
         model.addAttribute("profile", usuarioLogado.getProfile());
         return "admin";
     }
@@ -56,7 +52,6 @@ public class HomeController {
     public String salvar(@ModelAttribute Profile profileForm, Principal principal) {
         User usuarioLogado = userRepository.findByUsername(principal.getName()).orElseThrow();
         Profile perfilDoBanco = usuarioLogado.getProfile();
-
 
         perfilDoBanco.setNome(profileForm.getNome());
         perfilDoBanco.setBio(profileForm.getBio());
@@ -82,14 +77,15 @@ public class HomeController {
     public String deletarLink(@PathVariable Long id, Principal principal) {
         Link link = linkRepository.findById(id).orElse(null);
         
-
-
+        
         if (link != null && link.getProfile().getUser().getUsername().equals(principal.getName())) {
             
             Profile dono = link.getProfile();
-            dono.getLinks().removeIf(l -> l.getId().equals(id));
-            profileRepository.save(dono);
             
+            
+            dono.getLinks().removeIf(l -> Objects.equals(l.getId(), id));
+            
+            profileRepository.save(dono);
             linkRepository.delete(link);
         }
         
