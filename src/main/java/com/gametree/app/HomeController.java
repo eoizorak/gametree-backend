@@ -2,87 +2,97 @@ package com.gametree.app;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Controller
 public class HomeController {
 
     private final ProfileRepository profileRepository;
-    private final LinkRepository linkRepository; 
+    private final LinkRepository linkRepository;
+    private final UserRepository userRepository; 
 
-    public HomeController(ProfileRepository profileRepository, LinkRepository linkRepository) {
+    public HomeController(ProfileRepository profileRepository, LinkRepository linkRepository, UserRepository userRepository) {
         this.profileRepository = profileRepository;
         this.linkRepository = linkRepository;
+        this.userRepository = userRepository;
     }
+
+
+    @GetMapping("/u/{username}")
+    public String verPerfilPublico(@PathVariable String username, Model model) {
+
+        User usuario = userRepository.findByUsername(username).orElse(null);
+        
+
+        if (usuario != null && usuario.getProfile() != null) {
+            model.addAttribute("profile", usuario.getProfile());
+            return "index"; 
+        }
+        
+        return "redirect:/login"; 
+    }
+
 
     @GetMapping("/")
-    public String home(Model model) {
-        Profile perfil = profileRepository.findAll().stream().findFirst().orElse(new Profile());
-        if (perfil.getNome() == null) perfil.setNome("Seu Nome Aqui");
-        if (perfil.getBio() == null) perfil.setBio("Sua bio aparecerá aqui");
-        model.addAttribute("profile", perfil);
-        return "index";
+    public String home() {
+        return "redirect:/login";
     }
 
+
+
     @GetMapping("/admin")
-    public String admin(Model model) {
-        Profile perfil = profileRepository.findAll().stream().findFirst().orElse(new Profile());
-        model.addAttribute("profile", perfil);
+    public String admin(Model model, Principal principal) {
+
+        User usuarioLogado = userRepository.findByUsername(principal.getName()).orElseThrow();
+        
+
+        model.addAttribute("profile", usuarioLogado.getProfile());
         return "admin";
     }
 
     @PostMapping("/admin/save")
-    public String salvar(@ModelAttribute Profile profile) {
-        Profile existente = profileRepository.findAll().stream().findFirst().orElse(null);
-        if (existente != null) {
-            profile.setId(existente.getId()); 
-            profile.setLinks(existente.getLinks()); 
-        }
-        profileRepository.save(profile);
-        return "redirect:/admin"; 
-    }
+    public String salvar(@ModelAttribute Profile profileForm, Principal principal) {
+        User usuarioLogado = userRepository.findByUsername(principal.getName()).orElseThrow();
+        Profile perfilDoBanco = usuarioLogado.getProfile();
 
-    
 
-    @PostMapping("/admin/links/add")
-    public String adicionarLink(@RequestParam String titulo, @RequestParam String url) {
-        Profile perfil = profileRepository.findAll().stream().findFirst().orElse(null);
-        if (perfil != null) {
-            
-            Link novoLink = new Link(titulo, url, perfil);
-            linkRepository.save(novoLink);
-        }
+        perfilDoBanco.setNome(profileForm.getNome());
+        perfilDoBanco.setBio(profileForm.getBio());
+        perfilDoBanco.setAvatarUrl(profileForm.getAvatarUrl());
+        perfilDoBanco.setStatusServidor(profileForm.getStatusServidor());
+
+        profileRepository.save(perfilDoBanco);
         return "redirect:/admin";
     }
 
+    @PostMapping("/admin/links/add")
+    public String adicionarLink(@RequestParam String titulo, @RequestParam String url, Principal principal) {
+        User usuarioLogado = userRepository.findByUsername(principal.getName()).orElseThrow();
+        Profile perfil = usuarioLogado.getProfile();
 
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login";
+        Link novoLink = new Link(titulo, url, perfil);
+        linkRepository.save(novoLink);
+
+        return "redirect:/admin";
     }
 
-@PostMapping("/admin/links/delete/{id}")
-    public String deletarLink(@PathVariable Long id) {
-        
+    @PostMapping("/admin/links/delete/{id}")
+    public String deletarLink(@PathVariable Long id, Principal principal) {
         Link link = linkRepository.findById(id).orElse(null);
         
-        if (link != null) {
+
+
+        if (link != null && link.getProfile().getUser().getUsername().equals(principal.getName())) {
             
             Profile dono = link.getProfile();
+            dono.getLinks().removeIf(l -> l.getId().equals(id));
+            profileRepository.save(dono);
             
-            if (dono != null) {
-                dono.getLinks().removeIf(l -> l.getId().equals(id));
-                profileRepository.save(dono); 
-            }
-
             linkRepository.delete(link);
         }
         
         return "redirect:/admin";
     }
-    
 }

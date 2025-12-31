@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Conta | GameTree</title>
+    <style>
+        body { background-color: #0f0f13; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-box { background-color: #1e1e24; padding: 40px; border-radius: 10px; border: 1px solid #2f2f38; width: 100%; max-width: 350px; text-align: center; }
+        h2 { color: #7289da; margin-top: 0; }
+        input { width: 90%; padding: 12px; margin-top: 15px; background-color: #151515; border: 1px solid #444; color: white; border-radius: 5px; outline: none; }
+        input:focus { border-color: #7289da; }
+        button { width: 100%; margin-top: 25px; padding: 15px; background-color: #7289da; color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 16px; transition: 0.3s; }
+        button:hover { background-color: #5b6eae; transform: scale(1.02); }
+        .info { color: #aaa; margin-top: 20px; font-size: 14px; }
+        a { color: #00ff88; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <div class="login-box">
+        <h2>🚀 Criar Nova Conta</h2>
+
+        <form action="/register/save" method="post">
+            <input type="text" name="username" placeholder="Escolha um Usuário" required>
+            <input type="password" name="password" placeholder="Escolha uma Senha" required>
+            <button type="submit">Cadastrar e Criar Perfil</button>
+        </form>
+
+        <div class="info">
+            Já tem conta? <a href="/login">Fazer Login</a>
+        </div>
+    </div>
+
+</body>
+</html>
