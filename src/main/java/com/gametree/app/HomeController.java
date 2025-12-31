@@ -59,6 +59,12 @@ public class HomeController {
         return "redirect:/admin";
     }
 
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
+    }
+
 @PostMapping("/admin/links/delete/{id}")
     public String deletarLink(@PathVariable Long id) {
         
@@ -78,4 +84,5 @@ public class HomeController {
         
         return "redirect:/admin";
     }
+    
 }
